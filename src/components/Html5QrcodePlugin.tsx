@@ -5,8 +5,18 @@ import { useEffect } from 'react';
 const qrcodeRegionId = "html5qr-code-full-region";
 
 // Creates the configuration object for Html5QrcodeScanner.
-const createConfig = (props) => {
-    let config = {};
+interface Html5QrcodePluginProps {
+    fps?: number;
+    qrbox?: number | { width: number, height: number };
+    aspectRatio?: number;
+    disableFlip?: boolean;
+    verbose?: boolean;
+    qrCodeSuccessCallback: (decodedText: string, result: any) => void;
+    qrCodeErrorCallback?: (errorMessage: string) => void;
+}
+
+const createConfig = (props: Html5QrcodePluginProps) => {
+    const config: any = {};
     if (props.fps) {
         config.fps = props.fps;
     }
@@ -22,7 +32,7 @@ const createConfig = (props) => {
     return config;
 };
 
-const Html5QrcodePlugin = (props) => {
+const Html5QrcodePlugin = (props: Html5QrcodePluginProps) => {
 
     useEffect(() => {
         // when component mounts
@@ -41,10 +51,12 @@ const Html5QrcodePlugin = (props) => {
                 console.error("Failed to clear html5QrcodeScanner. ", error);
             });
         };
-    }, []);
+    }, [props]);
 
     return (
-        <div id={qrcodeRegionId}  />
+        <div className='bg-white text-black'>
+            <div id={qrcodeRegionId}  />
+        </div>
     );
 };
 

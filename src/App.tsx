@@ -1,32 +1,29 @@
-import './App.css'
-import React from 'react';
-import Html5QrcodePlugin from '@/components/Html5QrcodePlugin';
-import Navbar from './components/Navbar';
+import "./App.css";
+import Navbar from "./components/Navbar";
+import { Route, Routes, useNavigate } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Details from "./pages/Details";
+import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "./components/theme/theme-provider";
 
 function App() {
-  
-  const onNewScanResult = (decodedText, decodedResult) => {
-    console.log("App [result]", decodedResult);
-    alert(`Scan result: ${decodedText}`);
-  };
-  
-  return (
-    <div className="App">
-      <Navbar />
-      <header>
-        <h1>QR Code Scanner</h1>
-      </header>
-      <section>
-        <Html5QrcodePlugin
-          fps={10}
-          qrbox={250}
-          disableFlip={false}
-          qrCodeSuccessCallback={onNewScanResult}
-        />
-      </section>
-    </div>
-  )
+  const navigate = useNavigate();
 
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div id="#root">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/details/:id" element={<Details />} />
+          <Route path="/*" element={ <NotFound onNotFound={() => { navigate("/", { replace: true });}} /> } />
+        </Routes>
+      </div>
+    </ThemeProvider>
+  )
 }
 
-export default App
+export default App;
