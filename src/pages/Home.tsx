@@ -9,13 +9,13 @@ function Home() {
   };
   
   return (
-    <div className="flex flex-col justify-center items-center h-[75dvh]">
-      <header>
-        <h1>QR Code Scanner</h1>
-      </header>
-      <section className='w-full'>
-        <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
-      </section>
+    <div className="">
+      <h1 className="py-5 underline text-4xl font-bold text-center">QR Code Scanner</h1>
+      <div className='flex flex-col justify-center items-center h-[75dvh]'>
+        <div className="w-full">
+          <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
+        </div>      
+      </div>
     </div>
   )
 

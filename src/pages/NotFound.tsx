@@ -11,7 +11,7 @@ function NotFound({ onNotFound }: NotFoundProps) {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div style={{ textAlign: 'center', marginTop: '50px' }} className="flex flex-col justify-center items-center h-[75dvh]">
       <h1 className='text-2xl font-bold'>404 - Page Not Found</h1>
       <p className='py-2'>The page you're looking for doesn't exist.</p>
       <button
