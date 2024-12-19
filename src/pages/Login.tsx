@@ -88,12 +88,12 @@ function Login() {
               <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          <form onSubmit={handleGoogleLogin} className="w-full">
+          {/* <form onSubmit={handleGoogleLogin} className="w-full">
             <Button type="submit" variant="outline" className="w-full">
               <FcGoogle size={10} />
               Sign In With Google
             </Button>
-          </form>
+          </form> */}
         </CardFooter>
         {message && (
           <p className="text-center text-sm text-green-600 mt-4">

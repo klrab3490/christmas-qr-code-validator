@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { ref, onValue, update } from 'firebase/database';
-import { realtimeDB } from '@/config/firebaseConfig';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button"; // Assuming you have a button component
+import { realtimeDB } from '@/config/firebaseConfig';
+import { ref, onValue, update } from 'firebase/database';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Detail {
   [key: string]: unknown;
@@ -42,6 +42,7 @@ function Details() {
       await update(dataRef, { food: true });
       alert("Food status updated to served.");
       setDetails((prev) => (prev ? { ...prev, food: true } : prev));
+      window.location.href = '/';
     } catch (error) {
       console.error("Error updating food status:", error);
     }
@@ -53,26 +54,30 @@ function Details() {
       <div className="flex flex-col items-center justify-center h-auto">
         <Card className="w-full max-w-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Details for ID: {id}</CardTitle>
+            <CardTitle className="flex text-2xl font-bold text-center flex-col sm:flex-row">
+              <div>Details for ID</div>
+              <div className='text-lg'>{id}</div>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <>
-                <div className="mb-4 last:mb-0">
-                  <dt className="font-semibold text-gray-700 dark:text-gray-300">Email address</dt>
-                  <Skeleton className="mt-1 w-3/4 h-6" />
-                </div>
-                {/* Add other skeletons here */}
+                {['Name', 'SR Number', 'Semester', 'Food Type'].map((field) => (
+                  <div key={field} className="mb-4 last:mb-0">
+                    <dt className="font-semibold text-gray-700 dark:text-gray-300">{field}</dt>
+                    <Skeleton className="mt-1 w-3/4 h-6" />
+                  </div>
+                ))}
               </>
             ) : details ? (
               details.food ? (
                 <p className="text-center text-gray-500">Food already served for this ID.</p>
               ) : (
                 <>
-                  {Object.entries(details).map(([key, value]) => (
+                  {['name', 'sr_number', 'semester', 'food_type'].map((key) => (
                     <div key={key} className="mb-4 last:mb-0">
-                      <dt className="font-semibold text-gray-700 dark:text-gray-300">{key}</dt>
-                      <dd className="mt-1 text-gray-900 dark:text-gray-100">{String(value)}</dd>
+                      <dt className="font-semibold text-gray-700 dark:text-gray-300">{key.replace('_', ' ').toUpperCase()}</dt>
+                      <dd className="mt-1 text-gray-900 dark:text-gray-100">{String(details[key] || 'N/A')}</dd>
                     </div>
                   ))}
                   <Button
