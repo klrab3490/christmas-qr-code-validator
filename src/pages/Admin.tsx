@@ -34,8 +34,6 @@ function Admin() {
     }
   };
 
-
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const searchTerm = e.target.value;
     setSearch(searchTerm);
