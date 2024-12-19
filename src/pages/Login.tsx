@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState } from 'react';
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { auth } from '@/config/firebaseConfig';
 import { Button } from '@/components/ui/button';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+// import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,17 +31,17 @@ function Login() {
     }
   };
 
-  const handleGoogleLogin = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-      setMessage('Signed in with Google!');
-      navigate('/');
-    } catch (error) {
-      setMessage((error as any).message);
-    }
-  };
+  // const handleGoogleLogin = async (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   const provider = new GoogleAuthProvider();
+  //   try {
+  //     await signInWithPopup(auth, provider);
+  //     setMessage('Signed in with Google!');
+  //     navigate('/');
+  //   } catch (error) {
+  //     setMessage((error as any).message);
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center h-[75dvh]">
@@ -80,7 +81,7 @@ function Login() {
           </Tabs>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <div className="relative w-full">
+          {/* <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
@@ -88,7 +89,7 @@ function Login() {
               <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          {/* <form onSubmit={handleGoogleLogin} className="w-full">
+          <form onSubmit={handleGoogleLogin} className="w-full">
             <Button type="submit" variant="outline" className="w-full">
               <FcGoogle size={10} />
               Sign In With Google
