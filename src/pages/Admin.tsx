@@ -1,27 +1,35 @@
 import { useEffect, useState } from "react";
 import { get, ref } from "firebase/database";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { realtimeDB } from "@/config/firebaseConfig";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 interface DataItem {
-  "Email address": string;
-  "Food Type": string;
-  Name: string;
-  "SR Number": string | number;
-  Semester: string;
-  Timestamp: string;
-  food: boolean;
+  "department": string;
+  "email_address": string;
+  "food": boolean;
+  "food_type": string;
+  "id": string;
+  "name": string;
+  "payment_link": string;
+  "phone_number": number;
+  "semester": string;
+  "sr_number": number;
+  "timestamp": string;
 }
+
 
 function Admin() {
   const [search, setSearch] = useState<string>("");
+  const [view, setView] = useState<string>("table");
   const [data, setData] = useState<DataItem[]>([]);
   const [filteredData, setFilteredData] = useState<DataItem[]>([]);
 
   const fetchDetails = async () => {
     try {
-      const dataRef = ref(realtimeDB, `Form responses 2`);
+      const dataRef = ref(realtimeDB, `form_responses_1`);
       const snapshot = await get(dataRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
@@ -39,7 +47,7 @@ function Admin() {
     setSearch(searchTerm);
 
     const filtered = data.filter((item: DataItem) => {
-      const srNumber = item['SR Number'];
+      const srNumber = item.sr_number;
       return srNumber && srNumber.toString().includes(searchTerm);
     });
 
@@ -66,34 +74,56 @@ function Admin() {
         />
       </div>
 
-      {/* Render filtered data or the full data */}
-      <div className="mt-4">
-        <Table className="w-full border-collapse">
-          <TableHeader>
-            <TableRow>
-              <TableCell>Email Address</TableCell>
-              <TableCell>Food Type</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>SR Number</TableCell>
-              <TableCell>Semester</TableCell>
-              <TableCell>Timestamp</TableCell>
-              <TableCell>Food</TableCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {(search === "" ? data: filteredData).map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item["Email address"]}</TableCell>
-                <TableCell>{item["Food Type"]}</TableCell>
-                <TableCell>{item.Name}</TableCell>
-                <TableCell>{item["SR Number"]}</TableCell>
-                <TableCell>{item.Semester}</TableCell>
-                <TableCell>{item.Timestamp}</TableCell>
-                <TableCell>{item.food ? "Yes" : "No"}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <div>
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <Button onClick={() => setView("table")}>Table</Button>
+          <Button onClick={() => setView("card")}>Card</Button>
+        </div>
+
+        {/* Render filtered data or the full data */}
+        <div className="mt-4">
+          {view === "table" ? (
+            <Table className="w-full border-collapse">
+              <TableHeader>
+                <TableRow>
+                  <TableCell>Food Type</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>SR Number</TableCell>
+                  <TableCell>Semester</TableCell>
+                  <TableCell>Food</TableCell>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {(search === "" ? data : filteredData).map((item, index) => (
+                  <TableRow key={index} className={`${item.food ? "text-green-500" : "text-red-500"} hover:bg-gray-100`}>
+                    <TableCell>{item.food_type.startsWith("Non-Veg") ? "Non-Veg" : "Veg"}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.sr_number}</TableCell>
+                    <TableCell>{item.semester}</TableCell>
+                    <TableCell>{item.food ? "Yes" : "No"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              {(search === "" ? data : filteredData).map((item, index) => (
+                <Card key={index} className={`${item.food ? "bg-green-500" : "bg-red-500"}`}>
+                  <CardHeader>
+                    <CardTitle className="text-xl">{item.name}</CardTitle>
+                    <CardDescription className="text-black">{item.food_type.startsWith("Non-Veg") ? "Non-Veg" : "Veg"}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-black">SR Number: {item.sr_number}</CardDescription>
+                    <CardDescription className="text-black">Semester: {item.semester}</CardDescription>
+                    <CardDescription className="text-black">Food: {item.food ? "Yes" : "No"}</CardDescription>
+                    <CardDescription className="text-black">Payment URL: <a href={item.payment_link} className="underline text-blue-800 hover:text-blue-500">Payment Image</a></CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
     </div>
