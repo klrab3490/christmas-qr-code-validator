@@ -23,7 +23,7 @@ interface DataItem {
 
 function Admin() {
   const [search, setSearch] = useState<string>("");
-  const [view, setView] = useState<string>("table");
+  const [view, setView] = useState<string>("card");
   const [data, setData] = useState<DataItem[]>([]);
   const [filteredData, setFilteredData] = useState<DataItem[]>([]);
 
@@ -66,19 +66,20 @@ function Admin() {
     <div>
       <h1 className="py-5 underline text-4xl font-bold text-center">Admin</h1>
       <p className="text-2xl font-bold pb-4">Data In Database:</p>
+      <div className="flex justify-center items-center gap-2 mb-4">
+        Avaiable Views:
+        <Button onClick={() => setView("card")}>Card</Button>
+        <Button onClick={() => setView("table")}>Table</Button>
+      </div>
       <div className="flex justify-center items-center gap-2">
         <Input
           placeholder="Enter SR Number To Search"
-          className="w-1/4 text-xl"
+          className="w-[500px] text-xl h-10"
           onChange={(e) => { handleSearch(e)}}
         />
       </div>
 
       <div>
-        <div className="flex justify-center items-center gap-2 mt-4">
-          <Button onClick={() => setView("table")}>Table</Button>
-          <Button onClick={() => setView("card")}>Card</Button>
-        </div>
 
         {/* Render filtered data or the full data */}
         <div className="mt-4">

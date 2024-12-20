@@ -23,8 +23,8 @@ export default function Navbar() {
     return (
         <div className='py-6 flex justify-between items-center'>
             <h1 className='text-2xl font-bold flex gap-2 flex-wrap'>
-                <img src={icon} alt='logo' className='h-8 w-8 sm:flex hidden' />
-                Food Coupon Validator
+                <img src={icon} alt='logo' className='h-8 w-8' />
+                <span className='sm:flex hidden'>Food Coupon Validator</span>
             </h1>
             <div className='flex justify-center items-center gap-2'>
                 <DropdownMenu>
